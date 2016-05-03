@@ -6,7 +6,7 @@ import ie.martin.model.UserDet;
 public interface UserService {
 
 	UserDet createUser(UserDet u);
-	UserDet buyShare(UserDet u);
+	//UserDet buyShare(UserDet u);
 	UserDet sellShare(UserDet u);
 	UserDet getPortfolio(String username);
 }

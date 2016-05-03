@@ -32,7 +32,6 @@ public class ShareRestAPI {
 	@RequestMapping(value="/cache-shares-to-redis", method=RequestMethod.POST)
 	public void cacheSharesToRedis(@RequestBody RequestObject request) {
 
-		System.out.println("in DB rec shares");
 		List<Share> shares = request.shareList;
 
 		redis.saveShares(shares);
@@ -42,7 +41,6 @@ public class ShareRestAPI {
 	public List<Share> getCachedShares(String [] shareNames)
 	{
 
-		System.out.println("inside getting cached shares");
 		//hardcoded in for now
 		String  stocks [] = {"AAPL","GOOG","IBM","MSFT","FB","INTC"};
 
@@ -57,13 +55,9 @@ public class ShareRestAPI {
 	@RequestMapping(value="/add-user", method=RequestMethod.POST)
 	public void addUser(@RequestBody RequestObject request)
 	{
-	/*	ArrayList<Share> shares = new ArrayList<Share>();
-		UserDet usr = new UserDet();
-		usr.setName("Martin1");
-		usr.setBalance(1000000);
-		usr.setStocks(shares);*/
+		//get user details from RequestObject
 		UserDet usr = request.getUser();
-
+		//call createUser() in UserServicesp
 		user.createUser(usr);
 
 	}
@@ -73,7 +67,7 @@ public class ShareRestAPI {
 	public void buyShare()
 	{
 		//UserDet usr = request.getUser();
-
+/*
 		ArrayList<PurchasedShare> shares = new ArrayList<PurchasedShare>();
 		UserDet usr = new UserDet();
 		usr.setName("Martin1");
@@ -87,7 +81,7 @@ public class ShareRestAPI {
 		p.setAmount(12);
 		shares.add(p);
 		usr.setStocks(shares);
-		user.buyShare(usr);
+		user.buyShare(usr);*/
 	}
 	@RequestMapping(value="/sell-share", method=RequestMethod.GET)
 	public void sellShare()
@@ -96,12 +90,22 @@ public class ShareRestAPI {
 
 	}
 
-	@RequestMapping(value="/get-portfolio", method=RequestMethod.GET)
-	public UserDet getUserPortfolio()
+	@RequestMapping(value="/get-portfolio", method=RequestMethod.POST)
+	public UserDet getUserPortfolio(@RequestBody String username)
 	{
-		UserDet u = user.getPortfolio("Martin1");
-		System.out.println(u.toString());
-		return u;
+		System.out.println(username	);
+		if(user.getPortfolio(username)==null)
+		{
+			UserDet user = null;
+			return user;
+		}
+		else
+		{
+			UserDet u = user.getPortfolio(username);
+			System.out.println(u.toString());
+			return u;
+		}
+
 	}
 
 

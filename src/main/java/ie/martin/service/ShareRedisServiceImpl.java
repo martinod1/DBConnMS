@@ -13,6 +13,18 @@ public class ShareRedisServiceImpl implements ShareRedisService{
 
 	@Autowired
 	ShareRedisRepository shareRepo;
+
+	@Override
+	public void saveShares(List<Share> shares) {
+		//loop through each share  in list
+		for(Share s:shares)
+		{
+			//cast from double to string to save to DB
+			String value = String.valueOf(s.getValue());
+			shareRepo.add(s.getName(), value);
+		}
+
+	}
 	
 	@Override
 	public double getShare(String key) {
@@ -25,22 +37,10 @@ public class ShareRedisServiceImpl implements ShareRedisService{
 		System.out.println("Value = " + value);
 		
 		return v;
-		
-		
+
 	}
 
-	@Override
-	public void saveShares(List<Share> shares) {
-		//loop through each share  in list
-		for(Share s:shares)
-		{
-			//System.out.println("within share saving!!!");
-			//cast from double to string to save to DB
-			String value = String.valueOf(s.getValue());
-			shareRepo.add(s.getName(), value);
-		}
-		
-	}
+
 
 	@Override
 	public List<Share> getCachedShares(String [] keys) {
